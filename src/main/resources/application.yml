@@ -1,0 +1,58 @@
+param:
+  server-port: 8080
+  db-ip: localhost
+  db-port: 3306
+  db-name: sunzhao
+  db-username: root
+  db-password: 
+
+server:
+  port: ${param.server-port}
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,application/javascript,text/css
+  tomcat:
+    basedir: ./tomcat/
+    accesslog:
+      directory: logs
+      pattern:  '%h %l %u %t %D "%r" %s %b'
+      enabled: true
+mybatis:
+  config-locations: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mappers/*.map.xml
+logging:
+  path: ./logs/
+
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${param.db-ip}:${param.db-port}/${param.db-name}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=round
+    username: ${param.db-username}
+    password: ${param.db-password}
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,log4j
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    
+  http:
+    multipart:
+      maxFileSize: 100Mb
+      maxRequestSize: 100Mb
+  session:
+    store-type: jdbc
+    timeout: 600
+  jdbc:
+    initializer:
+      enabled: true
+  profiles:
+    active: ${RUN_ENV}
