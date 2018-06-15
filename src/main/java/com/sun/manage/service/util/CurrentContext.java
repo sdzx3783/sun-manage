@@ -25,4 +25,5 @@ public class CurrentContext implements ICurrentContext {
 	public void clearAll() {
 		curLocale.remove();
 	}
+	
 }

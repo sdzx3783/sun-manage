@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sun.manage.common.api.Contants;
 
 public class User implements Serializable {
     /**
@@ -11,6 +12,8 @@ public class User implements Serializable {
 	 */
 	private static final long serialVersionUID = 3653608355198574743L;
 
+	private String account;
+	
 	private Integer userId;
 
     private Integer roleId;
@@ -49,6 +52,9 @@ public class User implements Serializable {
     
     private String deviceToken;
 
+    private String salt;
+
+	private Integer type;
     public Integer getUserId() {
         return userId;
     }
@@ -200,4 +206,27 @@ public class User implements Serializable {
 	public void setDeviceToken(String deviceToken) {
 		this.deviceToken = deviceToken;
 	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public boolean isSuperUser(){
+        if (type!=null&&type== Contants.USER_TYPE_SUPER_SYS){
+            return true;
+        }
+        return false;
+    }
 }

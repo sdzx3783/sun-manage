@@ -6,8 +6,9 @@ import com.alibaba.fastjson.JSONObject;
 
 public class ResultMessage implements Serializable {
 	private static final long serialVersionUID = -7102370526170507252L;
-	public static final int Success = 1;
-	public static final int Fail = 0;
+	public  static final int Success = 1;
+	public  static final int Fail = 0;
+	public  static final int unauthorized = 401;
 	private int result = 1;
 	private String message = "";
 	private String cause = "";
@@ -60,5 +61,9 @@ public class ResultMessage implements Serializable {
 			e.printStackTrace();
 		}
 		return stringer.toString();
+	}
+
+	public static ResultMessage createUnauthorized(String message) {
+		return new ResultMessage(unauthorized, message);
 	}
 }
