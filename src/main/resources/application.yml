@@ -26,7 +26,7 @@ logging:
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://${param.db-ip}:${param.db-port}/${param.db-name}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=round
+    url: jdbc:mysql://${param.db-ip}:${param.db-port}/${param.db-name}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=round&useSSL=false
     username: ${param.db-username}
     password: ${param.db-password}
     initialSize: 5
@@ -43,7 +43,15 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     filters: stat,wall,log4j
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-    
+  jpa:
+     properties:
+         hibernate:
+           dialect: org.hibernate.dialect.MySQL5Dialect
+     showSql: true
+     hibernate:
+       ddl-auto: update
+       naming:
+         strategy: org.hibernate.cfg.EJB3NamingStrategy  
   http:
     multipart:
       maxFileSize: 100Mb

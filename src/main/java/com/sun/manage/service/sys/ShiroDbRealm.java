@@ -1,28 +1,33 @@
 package com.sun.manage.service.sys;
 
-import com.sun.manage.common.util.Encodes;
-import com.sun.manage.model.MySimpleByteSource;
-import com.sun.manage.model.ShiroUser;
-import com.sun.manage.model.SystemMenu;
-import com.sun.manage.model.User;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.shiro.authc.*;
+import javax.annotation.PostConstruct;
+
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
+import com.sun.manage.common.util.Encodes;
+import com.sun.manage.common.util.EncryptUtil;
+import com.sun.manage.entity.MySimpleByteSource;
+import com.sun.manage.entity.ShiroUser;
+import com.sun.manage.entity.sys.SysMenu;
+import com.sun.manage.entity.sys.SysUser;
 
 public class ShiroDbRealm extends AuthorizingRealm {
 
 	@Autowired
-	protected SystemUserService systemUserService;
+	protected SysUserService systemUserService;
 
 	/**
 	 * 认证回调函数,登录时调用.
@@ -31,7 +36,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken)
 			throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-		User user = systemUserService.findUserByAccount(token.getUsername());
+		SysUser user = systemUserService.getByAccount(token.getUsername());
 		if (user != null) {
 			byte[] salt = Encodes.decodeHex(user.getSalt());
 			ShiroUser shiroUser = new ShiroUser(user.getUserId(), user.getAccount(), user.getUserName());
@@ -39,6 +44,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		} else {
 			return null;
 		}
+	//	return new SimpleAuthenticationInfo(new ShiroUser(100000, "admin", "admin1名字"),"9e17ea12d1452bfcb855af3a0b1b0b5abe0b40d3", new MySimpleByteSource(Encodes.decodeHex("0e40dac260ccb35e")), getName());
 	}
 
 	/**
@@ -47,29 +53,34 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
-		User user = systemUserService.findUserByAccount(shiroUser.getAccount());
+		SysUser user = systemUserService.getByAccount(shiroUser.getAccount());
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		List<String> list = new ArrayList<String>();
 		if (user.isSuperUser()) {
 			list.add("*");
 		} else {
-			List<SystemMenu> systemMenuList = systemUserService.getMenuByUserId(user.getUserId());
-			for (SystemMenu systemMenu : systemMenuList) {
-			}
+			List<SysMenu> systemMenuList = systemUserService.getMenuByUserId(user.getUserId());
+			/*for (SystemMenu systemMenu : systemMenuList) {
+			}*/
 		}
 		info.addStringPermissions(list);
+		if(shiroUser!=null) {
+			info.addStringPermission("manage");//登陆成功的用户 都赋予manage权限
+		}
+		info.addStringPermission("test:index");
 		return info;
 	}
 
 	/**
-	 * 设定Password校验的Hash算法与迭代次数.
-	 */
-	@PostConstruct
-	public void initCredentialsMatcher() {
-		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher("SHA-1");
-		matcher.setHashIterations(1024);
-		setCredentialsMatcher(matcher);
-		// setCredentialsMatcher(new HashedCredentialsMatcher("md5"));
-	}
+     * 设定Password校验的Hash算法与迭代次数.
+     */
+    @PostConstruct
+    public void initCredentialsMatcher()
+    {
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(EncryptUtil.HASH_ALGORITHM);
+        matcher.setHashIterations(EncryptUtil.HASH_INTERATIONS);
+        setCredentialsMatcher(matcher);
+//        setCredentialsMatcher(new HashedCredentialsMatcher("md5"));
+    }
 
 }

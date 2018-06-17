@@ -1,4 +1,4 @@
-package com.sun.manage.model;
+package com.sun.manage.entity;
 
 
 import java.io.Serializable;

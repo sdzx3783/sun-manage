@@ -8,13 +8,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.sun.manage.common.util.DateFormatUtil;
-import com.sun.manage.model.User;
+import com.sun.manage.entity.sys.SysUser;
+import com.sun.manage.service.sys.SysUserService;
 import com.sun.manage.web.il8n.MessageUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +28,8 @@ public class TestController extends BaseController{
 	@Autowired
 	private MessageUtil messageUtil;
 	
-	
+	@Autowired
+	private SysUserService userService;
 	@RequestMapping(method=RequestMethod.GET)
 	public String testGet() {
 		return "common.jsp";
@@ -37,6 +41,7 @@ public class TestController extends BaseController{
 	 * @throws IOException 
 	 * @throws ServletException 
 	 */
+	@RequiresPermissions(value={"test:index","test:index1"},logical=Logical.OR)
 	@RequestMapping("/index")
 	public void tesIndex(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/demo-signIn.jsp").forward(request, response);;
@@ -46,8 +51,8 @@ public class TestController extends BaseController{
 		return "testTemplate.html";
 	}
 	@RequestMapping(value="/getUser",method=RequestMethod.GET)
-	public User getUser() {
-		User user = new User();
+	public SysUser getUser() {
+		SysUser user = new SysUser();
 		try {
 			user.setBirthday(DateFormatUtil.parse("1993-12-08"));
 		} catch (ParseException e) {

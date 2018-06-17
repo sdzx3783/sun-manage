@@ -1,12 +1,13 @@
 package com.sun.manage.config;
 
-import com.sun.manage.service.sys.ShiroDbRealm;
-import com.sun.manage.web.shiro.ShiroLoginFilter;
-import com.sun.manage.web.shiro.ShiroPermsFilter;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
 
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.authc.AnonymousFilter;
@@ -17,14 +18,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.sun.manage.service.sys.ShiroDbRealm;
+import com.sun.manage.web.shiro.ShiroLoginFilter;
+import com.sun.manage.web.shiro.ShiroPermsFilter;
 
 
 /**
@@ -55,7 +53,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         bean.setSecurityManager(securityManager);
         bean.setLoginUrl("/login");
-//        bean.setUnauthorizedUrl("/unauthor");
+//        bean.setUnauthorizedUrl("/unauthor");//对注解权限无效
 
         Map<String, Filter>filters = new HashMap();
         filters.put("perms", new ShiroPermsFilter());
@@ -64,15 +62,12 @@ public class ShiroConfig {
         bean.setFilters(filters);
 
         Map<String, String> chains = new HashMap();
+        chains.put("/favicon.ico", "anon");
         chains.put("/login", "anon");
-        chains.put("/unauthor", "anon");
-        chains.put("/base/**", "anon");
-        chains.put("/rest/**", "anon");
-        chains.put("/layer/**", "anon");
-        chains.put("/static/**", "anon");
+        chains.put("/test", "login,perms");
         chains.put("/admin/**", "anon");
 //        chains.put("/admin/**", "login,perms");
-        chains.put("/plateform/**", "login,perms");
+        chains.put("/**", "login,perms[manage]");//配置perms[manage]：需要manage的权限
         bean.setFilterChainDefinitionMap(chains);
         return bean;
     }
@@ -83,7 +78,7 @@ public class ShiroConfig {
     @Bean(value="ehCacheManager")
     public EhCacheManager ehCacheManager() {
         EhCacheManager cacheManager = new EhCacheManager();                
-        cacheManager.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
+        cacheManager.setCacheManagerConfigFile("classpath:cache/ehcache-shiro.xml");
         return cacheManager;
     }
     /**
@@ -162,7 +157,6 @@ public class ShiroConfig {
      * @return
      */
     @Bean
-    @DependsOn(value={"lifecycleBeanPostProcessor"})
     public ShiroDbRealm userRealm(EhCacheManager  ehCacheManager) {
         ShiroDbRealm userRealm = new ShiroDbRealm();
         // 设置缓存管理器
@@ -170,9 +164,11 @@ public class ShiroConfig {
         return userRealm;
     }
 
-
-    @Bean
+    /**
+     * 必须注释掉 不然会导致service层的注解事务配置失效
+     */
+    /*@Bean
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
-    }
+    }*/
 }

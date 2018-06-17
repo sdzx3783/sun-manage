@@ -19,7 +19,7 @@ import java.util.TimeZone;
  */
 public class ShiroPermsFilter extends PermissionsAuthorizationFilter {
     /**
-     * shiro认证perms资源失败后回调方法
+     * shiro认证perms资源失败后回调方法(该过滤器只能处理应用启动时shiro配置文件中或者shiro配置bean中的权限不匹配的处理，无法处理基于shiro权限相关注解的处理)
      * @param servletRequest
      * @param servletResponse
      * @return

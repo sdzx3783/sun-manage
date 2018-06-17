@@ -66,4 +66,12 @@ public class ResultMessage implements Serializable {
 	public static ResultMessage createUnauthorized(String message) {
 		return new ResultMessage(unauthorized, message);
 	}
+
+	public static ResultMessage createSuccess(String message) {
+		return new ResultMessage(Success, message);
+	}
+
+	public static ResultMessage createFAIL(String message) {
+		return new ResultMessage(Fail, message);
+	}
 }

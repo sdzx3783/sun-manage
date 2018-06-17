@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sun.manage.common.util.DateFormatUtil;
-import com.sun.manage.model.User;
+import com.sun.manage.entity.sys.SysUser;
 import com.sun.manage.web.ResultMessage;
 import com.sun.manage.web.exception.BusinessException;
 
@@ -22,8 +22,8 @@ public class TestRestController extends BaseController{
 	}
 	
 	@RequestMapping(value="/getUser",method=RequestMethod.GET)
-	public User getUser() {
-		User user = new User();
+	public SysUser getUser() {
+		SysUser user = new SysUser();
 		try {
 			user.setBirthday(DateFormatUtil.parse("1993-12-08"));
 		} catch (ParseException e) {

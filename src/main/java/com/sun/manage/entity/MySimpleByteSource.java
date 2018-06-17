@@ -1,4 +1,4 @@
-package com.sun.manage.model;
+package com.sun.manage.entity;
 
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.codec.Hex;

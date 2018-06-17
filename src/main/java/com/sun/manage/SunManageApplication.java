@@ -5,12 +5,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
-@SpringBootApplication
 @ComponentScan(basePackages= {"com.sun"})
 @ServletComponentScan(basePackages={"com.sun"})
-@ImportResource(locations = {"classpath:app-action.xml","classpath:application-shiro.xml"})
+@EnableJpaRepositories
+@EnableTransactionManagement
+@ImportResource(locations = {"classpath:app-action.xml"})
+@SpringBootApplication
 public class SunManageApplication{
 
     public static void main(String[] args) {

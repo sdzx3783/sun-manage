@@ -1,8 +1,8 @@
 package com.sun.manage.common.util;
 
-import org.apache.shiro.crypto.hash.Md5Hash;
-
 import java.security.MessageDigest;
+
+import org.apache.shiro.crypto.hash.SimpleHash;
 
 /**
  * 描述:MD5加密工具类
@@ -54,8 +54,9 @@ public class EncryptUtil {
         //第一个参数：明文，原始密码
         //第二个参数：盐，通过使用随机数
         //第三个参数：散列的次数，比如散列两次，相当 于md5(md5(''))
-        Md5Hash md5Hash = new Md5Hash(source, salt, HASH_INTERATIONS);
-        return md5Hash.toString();
+//        Md5Hash md5Hash = new Md5Hash(source, salt, HASH_INTERATIONS);
+    	SimpleHash simpleHash = new SimpleHash(HASH_ALGORITHM, source, salt, HASH_INTERATIONS);
+        return simpleHash.toString();
     }
 
     public static void main(String[] args) {

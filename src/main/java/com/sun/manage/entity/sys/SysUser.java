@@ -1,22 +1,42 @@
-package com.sun.manage.model;
+package com.sun.manage.entity.sys;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.DynamicInsert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.manage.common.api.Contants;
-
-public class User implements Serializable {
+@Entity
+@Table(name="sys_user")
+@DynamicInsert
+public class SysUser implements Serializable {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 3653608355198574743L;
 
 	private String account;
-	
+	@Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
-
-    private Integer roleId;
 
     private String wechatId;
 
@@ -30,6 +50,7 @@ public class User implements Serializable {
 
     private String mobile;
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @Temporal(TemporalType.DATE)
     private Date birthday;
 
     private String address;
@@ -47,7 +68,7 @@ public class User implements Serializable {
     private Date lastLoginTime;
     
     private String loginway;
-
+    
     private Integer state;
     
     private String deviceToken;
@@ -55,20 +76,19 @@ public class User implements Serializable {
     private String salt;
 
 	private Integer type;
+	
+	@JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "sys_user_role_rel", joinColumns= {
+    		@JoinColumn(name="user_id")},inverseJoinColumns= {@JoinColumn(name = "role_id")})
+	private Set<SysRole> roles=new HashSet<>();
+	
     public Integer getUserId() {
         return userId;
     }
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
     }
 
     public String getWechatId() {
@@ -162,7 +182,7 @@ public class User implements Serializable {
     public Date getCtime() {
         return ctime;
     }
-
+    
     public void setCtime(Date ctime) {
         this.ctime = ctime;
     }
@@ -221,6 +241,14 @@ public class User implements Serializable {
 
 	public void setAccount(String account) {
 		this.account = account;
+	}
+
+	public Set<SysRole> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<SysRole> roles) {
+		this.roles = roles;
 	}
 
 	public boolean isSuperUser(){

@@ -1,0 +1,125 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<link rel="stylesheet" type="text/css" href="/admin/resources/plugins/easyui/themes/default/easyui.css"/>
+	<link rel="stylesheet" type="text/css" href="/admin/resources/plugins/easyui/themes/icon.css"/>
+	<link rel="stylesheet" type="text/css" href="/admin/resources/css/default.css"/>
+	<script type="text/javascript" src="/admin/resources/plugins/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="/admin/resources/plugins/easyui/jquery.easyui.min.js"></script>
+	<script src="/admin/resources/plugins/layer/layer.js"></script>
+    <script src="/admin/resources/script/config.js"></script>
+    <title>登录</title>
+    <style>
+
+    .container {
+        width: 483px;
+        height: 379px;
+        margin: 0 auto;
+        top: 30%;
+        left: 50%;
+        margin-left: -240px;
+        position: absolute;
+        text-align: center;
+
+    }
+    .btn {
+        width: 300px;
+        height: 43px;
+        color: #fff;
+        background: #35537e;
+        font-size: 18px;
+        border-radius: 5px;
+    }
+    .form-group{
+        margin: 10px;
+    }
+    .form-group input {
+        height: 43px;
+        width: 300px;
+        font-size: 18px;
+        border-radius: 5px;
+        padding-left: 5px;
+        border:1px solid #35537e;
+    }
+        .head-text{
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-3 head">
+                <div class="col-sm-2 col-sm-offset-2 head-img"></div>
+                <div class="col-sm-6 head-text">
+                    设备管理</div>
+            </div>
+        </div>
+        <div cslss="row">
+            <div class="col-sm-offset-3 form-box ">
+                <div>
+                    <form class="form-horizontal" role="form" method="post" id="loginForm" >
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="account" id="account" placeholder="用户名"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="密码"/>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-offset-3 col-xs-3">
+                                <button type="submit" class="btn btn-info">登录</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    if (window != top)
+        top.location.href = location.href;
+
+    $(function () {
+        // 登录
+        $('#loginForm').form({
+            url:backend+'/login',
+            onSubmit : function() {
+				layer.load(2);
+                var isValid = $(this).form('validate');
+                if(!isValid){
+					layer.closeAll('loading');
+                }
+                return isValid;
+            },
+            /* success:function(result){
+				layer.closeAll('loading');
+                result = $.parseJSON(result);
+                if (result.state==200) {
+                    window.location.href='/admin/home.html';
+                }else{
+					layer.msg(result.msg);
+                }
+            } */
+        });
+    });
+    function submitForm(){
+        $('#loginForm').submit();
+    }
+    function clearForm(){
+        $('#loginForm').form('clear');
+    }
+    //回车登录
+    function enterLogin(){
+        if (event.keyCode == 13){
+            event.returnValue=false;
+            event.cancel = true;
+            $('#loginForm').submit();
+        }
+    }
+
+</script>
+</html>
