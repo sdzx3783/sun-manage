@@ -1,10 +1,10 @@
 param:
-  server-port: 8080
+  server-port: 8070
   db-ip: localhost
   db-port: 3306
   db-name: sunzhao
   db-username: root
-  db-password: 
+  db-password: 123456
 
 server:
   port: ${param.server-port}
@@ -52,6 +52,11 @@ spring:
        ddl-auto: update
        naming:
          strategy: org.hibernate.cfg.EJB3NamingStrategy  
+
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/iot_push
+        
   http:
     multipart:
       maxFileSize: 100Mb
