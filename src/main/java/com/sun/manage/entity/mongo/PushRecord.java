@@ -30,4 +30,13 @@ public class PushRecord {
     private boolean pushResult;
 
     private Long time;
+
+	@Override
+	public String toString() {
+		return "PushRecord [id=" + id + ", subject=" + subject + ", devId=" + devId + ", messageId=" + messageId
+				+ ", content=" + content + ", qosLevel=" + qosLevel + ", pushResult=" + pushResult + ", time=" + time
+				+ "]";
+	}
+    
+    
 }
