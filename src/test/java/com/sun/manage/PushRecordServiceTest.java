@@ -1,5 +1,6 @@
 package com.sun.manage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sun.manage.entity.mongo.NonDocInterfacesBean;
 import com.sun.manage.entity.mongo.PushRecord;
 import com.sun.manage.entity.sys.SysUser;
@@ -86,7 +91,7 @@ public class PushRecordServiceTest {
 	}
 	
 	@Test
-	public void testAddNonDocInterfacesBeanByMongoTemplate() {
+	public void testAddNonDocInterfacesBeanByMongoTemplate() throws JsonProcessingException {
 		NonDocInterfacesBean testMonoTemplateFindOne1 = new NonDocInterfacesBean();
 		testMonoTemplateFindOne1.setAge(22);
 		testMonoTemplateFindOne1.setD(10d);
@@ -95,10 +100,24 @@ public class PushRecordServiceTest {
 		SysUser sysUser = new SysUser();
 		sysUser.setAccount("admin");
 		sysUser.setCity("香港");
-		sysUser.setUserName("孙朝");
+		sysUser.setUserName("董秀1");
 		users.add(sysUser);
+		ObjectMapper mapper=new ObjectMapper();
+		// 过滤对象的null属性.
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		// 过滤map中的null值
+		mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+		String writeValueAsString = mapper.writeValueAsString(users);
+		testMonoTemplateFindOne1.setId(writeValueAsString);
 		testMonoTemplateFindOne1.setUsers(users);
 		pushRecordService.testAddNonDocInterfacesBeanByMongoTemplate(testMonoTemplateFindOne1);
 		System.out.println("-----"+testMonoTemplateFindOne1+"---------");
+	}
+	public static void main(String[] args) throws IOException {
+		ObjectMapper mapper=new ObjectMapper();
+		String writeValueAsString = mapper.writeValueAsString(null);
+		System.out.println(writeValueAsString);
+		SysUser readValue = mapper.readValue(writeValueAsString, SysUser.class);
+		System.out.println(readValue);
 	}
 }

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,8 +84,9 @@ public class SystemUserServiceTest {
 	
 
 	@Test
-	public void testDeleteListOfT() {
-		fail("Not yet implemented");
+	public void testTransaction() {
+		systemUserService.testTransaction("admin");
+		System.out.println("-----------");
 	}
 
 	@Test

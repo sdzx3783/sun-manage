@@ -71,6 +71,8 @@ public class PushRecordService {
 		Query query=new Query();
 		query.addCriteria(Criteria.where("id").is("5b2f3675cd76da2880de96ab"));
 		NonDocInterfacesBean findOne = mongoTemplate.findOne(query, NonDocInterfacesBean.class);
+		List<NonDocInterfacesBean> findAll = mongoTemplate.findAll(NonDocInterfacesBean.class);
+		System.out.println(findAll);
 		return findOne;
 	}
 }

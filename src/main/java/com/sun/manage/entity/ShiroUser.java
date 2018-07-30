@@ -16,6 +16,7 @@ public class ShiroUser implements Serializable
 
     private String name;
 
+    private String imageUrl;
     public ShiroUser(Integer id, String account, String name)
     {
         super();
@@ -41,11 +42,33 @@ public class ShiroUser implements Serializable
     /**
      * 本函数输出将作为默认的<shiro:principal/>输出.
      */
+    
+    
     @Override
     public String toString()
     {
         return account;
     }
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 
 	@Override
 	public int hashCode() {

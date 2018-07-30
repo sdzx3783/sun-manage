@@ -2,7 +2,6 @@ package com.sun.manage;
 
 import java.util.List;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +33,5 @@ public class SysMenuServiceTest {
 		List<RoleMenu> permissions = sysMenuService.getPermissions("/system/user/list");
 		System.out.println(permissions);
 	}
+	
 }
