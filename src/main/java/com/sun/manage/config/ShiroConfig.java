@@ -66,6 +66,7 @@ public class ShiroConfig {
         chains.put("/login", "anon");
         chains.put("/test", "login,perms");
         chains.put("/admin/**", "anon");
+        chains.put("/task/**", "anon");
 //        chains.put("/admin/**", "login,perms");
         chains.put("/**", "login,perms[manage]");//配置perms[manage]：需要manage的权限
         bean.setFilterChainDefinitionMap(chains);
