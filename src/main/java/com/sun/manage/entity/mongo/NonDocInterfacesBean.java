@@ -33,6 +33,8 @@ public class NonDocInterfacesBean {
 	private Double d;
 	private List<SysUser> users;
 	private SysUser sysUser;
+	
+	private Object t;
 	@Override
 	public String toString() {
 		return "NonDocInterfacesBean [id=" + id + ", name=" + name + ", date=" + date + ", age=" + age + ", d=" + d
