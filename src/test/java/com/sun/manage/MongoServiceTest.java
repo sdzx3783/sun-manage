@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -281,6 +283,35 @@ public class MongoServiceTest {
 		
 		main.andOperator(c6,c7);
 		query.addCriteria(main);
+		List<NonDocInterfacesBean> find = mongoTemplate.find(query, NonDocInterfacesBean.class);
+		System.out.println(find);
+	}
+	@Test
+	public void testQuery3() {
+		//查询d存在不为null的集合数据  ne(null):不包括不存在该属性的文档  ne(""):包括不存在该属性的文档
+		Query query=new Query();
+		Criteria main=new Criteria();
+		Criteria c5 = Criteria.where("d").ne(null);
+		Criteria c6 = Criteria.where("d").ne("");
+//		Criteria c7 = Criteria.where("id").is("5b69632867de2f3b7817aaab");
+		
+		main.andOperator(c5,c6);
+		query.addCriteria(main);
+		Pageable pageable=new PageRequest(1, 10);
+		query.with(pageable);
+		long count = mongoTemplate.count(query, NonDocInterfacesBean.class);
+		List<NonDocInterfacesBean> find = mongoTemplate.find(query, NonDocInterfacesBean.class);
+		System.out.println(find);
+	}
+	@Test
+	public void testQuery4() {
+		Query query=new Query();
+		Criteria main=new Criteria();
+		Criteria c1=Criteria.where("d").exists(true).and("t").exists(true);
+		main.andOperator(c1);
+		query.addCriteria(main);
+		long count = mongoTemplate.count(query, NonDocInterfacesBean.class);
+		System.out.println(count);
 		List<NonDocInterfacesBean> find = mongoTemplate.find(query, NonDocInterfacesBean.class);
 		System.out.println(find);
 	}

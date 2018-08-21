@@ -63,6 +63,7 @@ public class ShiroConfig {
 
         Map<String, String> chains = new HashMap();
         chains.put("/favicon.ico", "anon");
+        chains.put("/js/**", "anon");
         chains.put("/login", "anon");
         chains.put("/test", "login,perms");
         chains.put("/admin/**", "anon");

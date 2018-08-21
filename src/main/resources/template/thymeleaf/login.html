@@ -1,15 +1,10 @@
-﻿<!doctype html>
-<html>
+﻿<!DOCTYPE html>
+<html th:inline="text">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<link rel="stylesheet" type="text/css" href="/admin/resources/plugins/easyui/themes/default/easyui.css"/>
-	<link rel="stylesheet" type="text/css" href="/admin/resources/plugins/easyui/themes/icon.css"/>
-	<link rel="stylesheet" type="text/css" href="/admin/resources/css/default.css"/>
-	<script type="text/javascript" src="/admin/resources/plugins/easyui/jquery.min.js"></script>
-	<script type="text/javascript" src="/admin/resources/plugins/easyui/jquery.easyui.min.js"></script>
-	<script src="/admin/resources/plugins/layer/layer.js"></script>
-    <script src="/admin/resources/script/config.js"></script>
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.easyui.min.js"></script>
     <title>登录</title>
     <style>
 
@@ -68,6 +63,7 @@
                         <div class="form-group">
                             <input type="password" class="form-control" name="password" id="password" placeholder="密码"/>
                         </div>
+                        <input type="hidden" class="form-control" name="type" value="0"/>
                         <div class="form-group">
                             <div class="col-xs-offset-3 col-xs-3">
                                 <button type="submit" class="btn btn-info">登录</button>
@@ -80,36 +76,40 @@
         </div>
     </div>
 </body>
-<script type="text/javascript">
+<script>
     if (window != top)
         top.location.href = location.href;
 
     $(function () {
         // 登录
         $('#loginForm').form({
-            url:backend+'/login',
+            url:'/login',
             onSubmit : function() {
-				layer.load(2);
                 var isValid = $(this).form('validate');
                 if(!isValid){
-					layer.closeAll('loading');
+					//layer.closeAll('loading');
                 }
                 return isValid;
             },
-            /* success:function(result){
-				layer.closeAll('loading');
+            success:function(result){
+				//layer.closeAll('loading');
                 result = $.parseJSON(result);
-                if (result.state==200) {
-                    window.location.href='/admin/home.html';
+                if (result.result==1) {
+                	if($("input[name='type']").val()==0){
+	                    window.location.href='/admin/home.html';
+                	}else if($("input[name='type']").val()==1){
+                		window.location.href=result.message;
+                	}
                 }else{
-					layer.msg(result.msg);
+					alert(result.msg);
                 }
-            } */
+            }
         });
         
         
         $("#weinxinBtn").click(function(){
-        	
+        	$("input[name='type']").val(1);
+        	$('#loginForm').submit();
         });
     });
     function submitForm(){

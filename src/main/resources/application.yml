@@ -19,14 +19,14 @@ server:
       enabled: true
 mybatis:
   config-locations: classpath:mybatis/mybatis-config.xml
-  mapper-locations: classpath:mybatis/mappers/*.map.xml
+  mapper-locations: classpath:mybatis/mappers/*.xml
 logging:
   path: ./logs/
 
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://${param.db-ip}:${param.db-port}/${param.db-name}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=round&useSSL=false
+    url: jdbc:mysql://${param.db-ip}:${param.db-port}/${param.db-name}?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=round&useSSL=false&&allowMultiQueries=true
     username: ${param.db-username}
     password: ${param.db-password}
     initialSize: 5
@@ -69,3 +69,14 @@ spring:
       enabled: true
   profiles:
     active: ${RUN_ENV}
+    
+    
+wx:
+  config:
+    appId: wxc8e507be56bf7ad2
+    appSecret: 1b6f86fc1993db99db618df501bafebb
+    mchId: 
+    appKey: 
+    signType: 
+    secretCert: 
+    sandbox: true

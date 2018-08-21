@@ -1,5 +1,6 @@
 package com.sun.manage;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories
 @EnableTransactionManagement
 @ImportResource(locations = {"classpath:app-action.xml"})
+@MapperScan(basePackages="com.sun.manage.repository.mysql")
 @SpringBootApplication
 public class SunManageApplication{
 
