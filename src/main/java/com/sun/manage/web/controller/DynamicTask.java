@@ -47,10 +47,11 @@ public class DynamicTask {
     public String startTask(){
         //秒，分钟，小时，日期，月份，星期，年（可选）.
         //每5秒执行一次定时任务.(具体任务间隔时间还需要根据任务的具体执行时间来定)
-        future = threadPoolTaskScheduler.schedule(new MyRunnable("1111"), new CronTrigger("0/1 * * * * *"));
-        
+    	System.out.println("start Task1");
+    	future = threadPoolTaskScheduler.schedule(new MyRunnable("1111"), new CronTrigger("0/1 * * * * *"));
+    	System.out.println("start Task2");
         future = threadPoolTaskScheduler.schedule(new MyRunnable("2222"), new CronTrigger("0/1 * * * * *"));
-        System.out.println("start Task");
+        System.out.println("start Task end");
         return "startTask";
     }
     
