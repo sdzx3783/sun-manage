@@ -90,7 +90,7 @@ public class CuratorClient {
 	
 	public void connectServer() {
 		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
-		_client = CuratorFrameworkFactory.newClient("192.168.176.128:2181", retryPolicy);
+		_client = CuratorFrameworkFactory.newClient("192.168.10.107:2181", retryPolicy);
 		// 客户端注册监听，进行连接配置
 		_client.getConnectionStateListenable().addListener(clientListener);
 		_client.start();
