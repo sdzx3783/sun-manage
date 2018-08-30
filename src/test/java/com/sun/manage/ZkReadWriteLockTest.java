@@ -14,6 +14,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.sun.zookeeper.curator.ReadWriteLock;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**  
  * @Title:  ZkReadWriteLockTest.java   
  * @Description:    zk读写锁测试
@@ -22,6 +24,7 @@ import com.sun.zookeeper.curator.ReadWriteLock;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@Slf4j
 public class ZkReadWriteLockTest {
 	@Autowired
 	ReadWriteLock readWriteLock;
@@ -34,9 +37,9 @@ public class ZkReadWriteLockTest {
 	@Test
 	public void test() throws InterruptedException {
 		while(true) {
-			executor.execute(()->{
+			/*executor.execute(()->{
 				increaseData();
-			});
+			});*/
 			executor.execute(()->{
 				decreaseData();
 			});
@@ -48,7 +51,7 @@ public class ZkReadWriteLockTest {
 		try {
 			readWriteLock.getWriteLock(LOCK_KEY);
 			data++;
-			System.out.println("加操作："+data);
+			log.debug("加操作："+data);
 			Thread.sleep(300);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,7 +64,7 @@ public class ZkReadWriteLockTest {
 			readWriteLock.getWriteLock(LOCK_KEY);
 			if(data>0) {
 				data--;
-				System.out.println("减操作："+data);
+				log.debug("减操作："+data);
 			}
 			Thread.sleep(300);
 		} catch (Exception e) {

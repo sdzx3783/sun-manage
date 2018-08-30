@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Title: ReadWriteLock.java
- * @Description: zookeeper实现读写锁
+ * @Description: zookeeper实现读写锁(待改进：顺序节点并不是每次累加1，原因不明。需要考虑顺序节点的节点数溢出问题)
  * @author: sunzhao
  * @date: 2018年8月29日 上午11:05:25
  */
@@ -68,12 +68,14 @@ public class ReadWriteLock {
 		String parentPath = LOCKPATH + "/" + key;
 		String currentPath = client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
 				.withACL(Ids.OPEN_ACL_UNSAFE).forPath(parentPath + "/" + READKEYPRE + key + "-", "r".getBytes());
+		log.debug("尝试获取写锁开始,key:{}",currentPath);
 		lockPath.set(currentPath);
 		long begin = System.currentTimeMillis();
 		boolean lock = false;
 
 		do {
 			List<String> lockChildrens = client.getChildren().forPath(parentPath);
+			log.debug("获取parentPath:{}的所有子节点:lockChildrens:{}]",parentPath,lockChildrens);
 			boolean r = canGetReadLock(lockChildrens, currentPath, key);
 			if (r) {
 				log.debug("获取读锁成功，key:{},currentPath:{}", key, currentPath);
@@ -105,11 +107,13 @@ public class ReadWriteLock {
 		String currentPath = client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
 				.withACL(Ids.OPEN_ACL_UNSAFE).forPath(parentPath + "/" + WRITEKEYPRE + key + "-", "w".getBytes());
 		lockPath.set(currentPath);
+		log.debug("尝试获取写锁开始,key:{}",currentPath);
 		long begin = System.currentTimeMillis();
 		boolean lock = false;
 
 		do {
 			List<String> lockChildrens = client.getChildren().forPath(parentPath);
+			log.debug("获取parentPath:{}的所有子节点:lockChildrens:{}]",parentPath,lockChildrens);
 			boolean r = canGetWriteLock(lockChildrens, currentPath, key);
 			if (r) {
 				log.debug("获取写锁成功，key:{},currentPath:{}", key, currentPath);
@@ -182,7 +186,10 @@ public class ReadWriteLock {
 			if (StringUtils.isNotEmpty(currentPath)) {
 				CuratorFramework client = curatorClient.get_client();
 				if (client.checkExists().forPath(currentPath) != null) {
+					log.debug("释放锁开始:currentPath:{}", currentPath);
 					client.delete().forPath(currentPath);
+					log.debug("释放锁结束:currentPath:{}", currentPath);
+					
 				}
 			}
 		} catch (Exception e) {
