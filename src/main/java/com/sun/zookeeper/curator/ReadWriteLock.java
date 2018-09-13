@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ReadWriteLock {
 	@Autowired
 	private CuratorClient curatorClient;
-
 	private static final String LOCKPATH = "/lock1";
 	private static final String READKEYPRE = "r-";
 	private static final String WRITEKEYPRE = "w-";
