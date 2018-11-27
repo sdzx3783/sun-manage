@@ -166,7 +166,7 @@ public class ReadWriteLock {
 			if ((LOCKPATH + "/" + key + "/" + s).equals(currentPath)) {
 				break;
 			}
-			if (s.startsWith(READKEYPRE)) {
+			if (s.startsWith(WRITEKEYPRE)) {
 				isExistWrite = true;
 				break;
 			}
