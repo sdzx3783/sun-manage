@@ -14,7 +14,7 @@ import com.sun.zookeeper.curator.CuratorClient;
 @Configuration
 public class ZookeeperConfigurer {
 	
-	@Bean(initMethod = "connectServer", destroyMethod = "disConnectServer")
+	@Bean//(initMethod = "connectServer", destroyMethod = "disConnectServer")
     public CuratorClient curatorClient(){
 		return new CuratorClient();
 	}
