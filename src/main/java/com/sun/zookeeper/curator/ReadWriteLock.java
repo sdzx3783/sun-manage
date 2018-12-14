@@ -139,7 +139,7 @@ public class ReadWriteLock {
 		if (lockChildrens == null || lockChildrens.size() <= 0) {
 			return true;
 		}
-		Optional<String> optional = lockChildrens.stream()
+		Optional<String> optional = lockChildrens.stream().filter(s->s.contains(WRITEKEYPRE))
 				.sorted(Comparator.comparing(s -> StringUtils.substringAfter(s, WRITEKEYPRE))).findFirst();
 		if (optional.isPresent() && currentPath.equals(LOCKPATH + "/" + key + "/" + optional.get())) {
 			return true;
