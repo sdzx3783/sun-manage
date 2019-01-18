@@ -66,6 +66,7 @@ public class ShiroConfig {
         chains.put("/js/**", "anon");
         chains.put("/login", "anon");
         chains.put("/test", "login,perms");
+        chains.put("/rest/**", "anon");
         chains.put("/admin/**", "anon");
         chains.put("/task/**", "anon");
 //        chains.put("/admin/**", "login,perms");

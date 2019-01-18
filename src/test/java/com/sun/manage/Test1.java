@@ -1,10 +1,5 @@
 package com.sun.manage;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSONObject;
-
 
 /**  
  * @Title:  Test1.java   
@@ -14,11 +9,13 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class Test1 {
 	public static void main(String[] args) {
-		JSONObject json=new JSONObject();
-		Map<String,Integer> map=new HashMap<>();
-		map.put("count", 111);
-		json.put("info", map);
-		json.put("count", 22);
-		System.out.println(json.containsKey("count"));
+		String a = "xiaomeng2";
+		final String b = "xiaomeng";
+		String d = "xiaomeng";
+		String c = b + 2;
+		String e = d + 2;
+		System.out.println((a == c));
+		System.out.println((a == e));
+		System.out.println((a == e.intern()));
 	}
 }
