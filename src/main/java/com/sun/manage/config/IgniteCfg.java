@@ -36,7 +36,7 @@ public class IgniteCfg{
         ccfg.setIndexedTypes(Long.class, Person.class);
 
         cfg.setCacheConfiguration(ccfg);
-        cfg.setClientMode(true);
+        cfg.setClientMode(false);
         return Ignition.start(cfg);
     }
 }
