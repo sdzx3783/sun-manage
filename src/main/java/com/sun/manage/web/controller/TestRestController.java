@@ -59,4 +59,17 @@ public class TestRestController extends BaseController{
 		}
 		System.out.println("========testSaveIgnite over==========");
 	}
+
+	@RequestMapping("/testGetAllIgnite")
+	public void testGetAllIgnite(HttpServletRequest request){
+		String url=request.getRequestURL().toString();
+		Iterable iterable=personRepository.findAll();
+		Iterator iterator = iterable.iterator();
+		int i=0;
+		while (iterator.hasNext()){
+			System.out.println(iterator.next());
+			i++;
+		}
+		System.out.println("========testSaveIgnite over======== size:"+i+" ==");
+	}
 }

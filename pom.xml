@@ -278,11 +278,11 @@
 			<version>${ignite.version}</version>
 		</dependency>
 		ignite 2.6.0版本之前的maven配置 ended by sammy -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.apache.ignite</groupId>
 			<artifactId>ignite-core</artifactId>
 			<version>${ignite.version}</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -294,16 +294,16 @@
 			<version>${ignite.version}</version>
 			<exclusions>
 				<exclusion>
-					<groupId>org.apache.ignite</groupId>
-					<artifactId>ignite-core</artifactId>
-				</exclusion>
-				<exclusion>
 					<groupId>com.h2database</groupId>
 					<artifactId>h2</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+		<!--<dependency>
+			<groupId>org.apache.ignite</groupId>
+			<artifactId>ignite-visor-console_2.10</artifactId>
+			<version>${ignite.version}</version>
+		</dependency>-->
 	</dependencies>
 
 	<build>

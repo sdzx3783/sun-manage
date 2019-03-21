@@ -27,7 +27,7 @@ public class IgniteCfg{
         cfg.setIgniteInstanceName("springDataNode");
 
         // Enabling peer-class loading feature.
-        cfg.setPeerClassLoadingEnabled(true);
+        cfg.setPeerClassLoadingEnabled(false);
 
         // Defining and creating a new cache to be used by Ignite Spring Data repository.
         CacheConfiguration ccfg = new CacheConfiguration("PersonCache");
@@ -36,6 +36,7 @@ public class IgniteCfg{
         ccfg.setIndexedTypes(Long.class, Person.class);
 
         cfg.setCacheConfiguration(ccfg);
+        cfg.setClientMode(true);
         return Ignition.start(cfg);
     }
 }
